@@ -1,0 +1,159 @@
+/* stafflogin.module.css */  
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+  /* stafflogin.module.css */
+
+/* ... (previous CSS code) ... */
+
+.company {
+    font-size: 28px; /* Increase font size */
+    text-align: center;
+    padding: 20px 0;
+    color: #333; /* White text color */
+    background-color: var(--dusky-green); /* Use your color variable or a specific color */
+    border-top-left-radius: 10px; /* Rounded top-left corner */
+    border-top-right-radius: 10px; /* Rounded top-right corner */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  }
+  
+  /* ... (rest of the CSS remains the same) */
+  
+  
+  /* Adjust the form width and columns */
+  .form-container {
+    width: 83%;
+    grid-column: span 5;
+    grid-row: 1 / span 2;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 45px;
+    padding: 50px;
+    color: var(--form-txt);
+  }
+  /* Style the select element */
+select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f5f5f5;
+    transition: border-color 0.3s ease;
+  }
+  
+  /* Style the select element on focus */
+  select:focus {
+    outline: none;
+    border-color: #007bff;
+  }
+  
+  /* Style the option elements */
+  select option {
+    padding: 10px;
+    background-color: #f5f5f5;
+    color: #333;
+  }
+  
+  /* Style the option elements on hover */
+  select option:hover {
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+
+  /* Add this CSS to your stafflogin.module.css file or any other stylesheet you are using */
+
+
+  
+  /* Right-side content (images) */
+  .image-container {
+    grid-column: 1 / span 1;
+    grid-row: 1 / span 2;
+    background-color: var(--dusky-green);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+ 
+ 
+  
+  label {
+    font-weight: bold;
+    color: #333;
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="password"]
+   {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f5f5f5;
+    transition: border-color 0.3s ease;
+  }
+  
+  input[type="text"]:focus,
+  input[type="email"]:focus,
+  input[type="tel"]:focus,
+  input[type="password"]:focus {
+    outline: none;
+    border-color: #007bff;
+  }
+  
+  span {
+    display: block;
+    margin-top: 5px;
+    color: #777;
+  }
+  
+  .error {
+    color: red;
+    font-size: 14px;
+  }
+  
+
+
+  
+.outro-greeting {
+    z-index: 3;
+    font-weight: 700;
+    letter-spacing: .02em;
+    word-spacing: .1em;
+    text-align: center; /* Center the text */
+    order: 1;
+  }
+
+  
+  .submit-btn {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 12px 20px;
+    cursor: pointer;
+    display: block;
+    margin: 0 auto;
+    transition: background-color 0.3s ease;
+  }
+  
+  .submit-btn:hover {
+    background-color: #0056b3;
+  }
+  

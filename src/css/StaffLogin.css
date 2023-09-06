@@ -1,0 +1,53 @@
+/* Container for the entire staff login component */
+.staff-login-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-image: url('../Pages/Background 2.png'); /* Add your background image path here */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+  }
+  
+  /* Title */
+  .staff-login-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  /* Text input styles */
+  .MuiTextField-root {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  
+  /* Button styles */
+  .MuiButton-root {
+    background-color: #0d5dd3;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 12px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+  }
+  
+  .MuiButton-root:hover {
+    background-color: #0942a1;
+  }
+  
+  /* Error message styles */
+  .MuiAlert-root {
+    color: red;
+    font-size: 14px;
+    margin-top: 10px;
+  }
+  
