@@ -5,11 +5,13 @@ import { auth, firestore ,storage} from '../firebaseConfig';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import { TableCell,Table,TableBody,TableRow,TableHead } from '@mui/material';
-
+import '../css/studentdashboard.css';
 function StudentDashboard() {
   const navigate = useNavigate();
   const [userData, setUserData] = useState(null);
   const [editMode, setEditMode] = useState(false);
+// Define state variables for tab management
+const [activeTab, setActiveTab] = useState('personalInfo');
   const [activityPoints, setActivityPoints] = useState('');
   const [studentList, setStudentList] = useState([]); // To store the list of all students
   const [selectedStudentUid, setSelectedStudentUid] = useState('');
@@ -29,6 +31,16 @@ function StudentDashboard() {
     posts: '', // Add the 'posts' field
   });
 
+
+
+
+
+
+
+
+
+
+  
   const handleLogout = async () => {
     try {
       await auth.signOut();
@@ -40,7 +52,7 @@ function StudentDashboard() {
 
   const handleEdit = () => {
     // Toggle edit mode and initialize edited data with the current user data
-    setEditMode(!editMode);
+    setEditMode(!editMode); 
     setEditedData({
       email: userData.email,
       phone: userData.phone,
@@ -263,106 +275,83 @@ function StudentDashboard() {
     fetchLatestEvents();
   }, []);
 
+  const handleTabClick = (tabName) => {
+    setActiveTab(tabName);
+  };
+
 
   return (
     <div className="dashboard-container">
-      <h1>Welcome Back, {userData?.firstname || 'Student'}</h1>
-      <h2>HAI IEDC SNMIMT , {userData?.posts || 'students'}</h2>
+      <h1>Welcome Back, {`${userData?.firstname || 'Student'} ${userData?.lastname || ''}`}
+</h1>
+      <h2>Helloo..., {userData?.posts || 'students'}</h2>
       <div className="button-container">
         <Button
           variant="contained"
-          style={{ backgroundColor: 'red', color: 'white' }}
+          color="warning"
+          size="small"
+          sx={{ ml: 2 }}
           onClick={handleLogout}
         >
           Logout
         </Button>
       </div>
-      <div>
-      {showUploadButton && (
-        <div>
-          <input
-            type="file"
-            accept="/*"
-            onChange={handleFileChange}
-          />
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleUploadDoc}
+      <div className="tabs-container">
+        <div className="tabs">
+          <div
+            className={`tab ${activeTab === 'personalInfo' ? 'active' : ''}`}
+            onClick={() => handleTabClick('personalInfo')}
           >
-            Upload Document
-          </Button>
+            Personal Information
+          </div>
+          <div
+            className={`tab ${activeTab === 'uploadPoster' ? 'active' : ''}`}
+            onClick={() => handleTabClick('uploadPoster')}
+          >
+            Upload Poster
+          </div>
+         
         </div>
-      )}
+        <div className="tab-content">
+          {activeTab === 'personalInfo' && (
+            <div className="user-info">
+              {/* Personal Information content */}
+              {/* ... */}
 
-
-        {userData && (
+              {userData && (
           <div className="user-info">
             <h2>Personal Information</h2>
-            {userData.posts === 'CEO' && (
-              <div>
-                <div>
-                  <label>Select a Student:</label>
-                  <select
-                    value={selectedStudentUid}
-                    onChange={(e) => setSelectedStudentUid(e.target.value)}
-                  >
-                    <option value="">Select a Student</option>
-                    {studentList.map((student) => (
-                      <option key={student.uid} value={student.uid}>
-                        {student.firstname} {student.lastname}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                {selectedStudentUid && (
-                  <div>
-                    <TextField
-                      label="Activity Points"
-                      type="number"
-                      value={activityPoints}
-                      onChange={(e) => setActivityPoints(e.target.value)}
-                    />
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={handleUpdateActivityPoints}
-                    >
-                      Update Activity Points
-                    </Button>
-                  </div>
-                )}
-              </div>
-            )}
+           
 
-
-            {userData && (
-        <div className="user-info">
-          {/* ... (other code remains the same) */}
-          {userData.posts === 'CPO' || userData.posts === 'CEO' ? (
-            <div>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleFileChange}
-              />
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleUploadPoster}
-              >
-                Upload Poster
-              </Button>
-            </div>
-          ) : null}
-        </div>
-      )}
             {editMode ? (
               <form>
-                {/* ... (rest of the form fields) */}
+             
+  <TextField
+    label="Email"
+    type="email"
+    value={editedData.email}
+    onChange={(e) => setEditedData({ ...editedData, email: e.target.value })}
+  />
+  <TextField
+    label="Phone Number"
+    type="tel"
+    value={editedData.phone}
+    onChange={(e) => setEditedData({ ...editedData, phone: e.target.value })}
+  />
+  <TextField
+    label="Change Password"
+    type="Password"
+    value={editedData.password}
+    onChange={(e) => setEditedData({ ...editedData, password: e.target.value })}
+  />
+  {/* Repeat this pattern for other form fields */}
+ 
+
               </form>
             ) : (
-              <Table>
+              <div className="table-container">
+              <Table className="custom-table">
+              
                 <TableHead>
                   <TableRow>
                     <TableCell>Username</TableCell>
@@ -418,6 +407,7 @@ function StudentDashboard() {
                   </TableRow>
                 </TableBody>
               </Table>
+              </div>
             )}
             {editMode ? (
               <Button
@@ -438,11 +428,99 @@ function StudentDashboard() {
             )}
           </div>
         )}
+            </div>
+          )}
+          {activeTab === 'uploadPoster' && (
+            <div className="upload-poster">
+              {/* Upload Poster content */}
+              {/* ... */}
+
+              {userData.posts === 'CEO' && (
+              <div>
+                <div>
+                  <label>Select a Student:</label>
+                  <select
+                    value={selectedStudentUid}
+                    onChange={(e) => setSelectedStudentUid(e.target.value)}
+                  >
+                    <option value="">Select a Student</option>
+                    {studentList.map((student) => (
+                      <option key={student.uid} value={student.uid}>
+                        {student.firstname} {student.lastname}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                {selectedStudentUid && (
+                  <div>
+                    <TextField
+                      label="Activity Points"
+                      type="number"
+                      value={activityPoints}
+                      onChange={(e) => setActivityPoints(e.target.value)}
+                    />
+                    <Button
+                      variant="contained"
+        color="primary"
+        size="small" // Set button size to 'small'
+        sx={{ ml: 2 }} // Add margin to the left (adjust as needed)
+                      onClick={handleUpdateActivityPoints}
+                    >
+                      Update Activity Points
+                    </Button>
+                  </div>
+                )}
+              </div>
+            )}
+            {userData.posts === 'CPO' || userData.posts === 'CEO' ? (
+            <div>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+              />
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleUploadPoster}
+              >
+                Upload Poster
+              </Button>
+            </div>
+          ) : null}
+
+          {showUploadButton && (
+        <div>
+          <input
+            type="file"
+            accept="/*"
+            onChange={handleFileChange}
+          />
+          <Button
+            variant="contained"
+        color="primary"
+        size="small" // Set button size to 'small'
+        sx={{ ml: 2 }} // Add margin to the left (adjust as needed)
+            onClick={handleUploadDoc}
+          >
+            Upload Document
+          </Button>
+        </div>
+      )}
+            </div>
+          )}
+          {activeTab === 'editProfile' && (
+            <div className="edit-profile">
+              {/* Edit Profile content */}
+              {/* ... */}
+            </div>
+          )}
+        </div>
       </div>
       <div>
         <h2>Latest Events</h2>
         <ul>
-          {latestEvents.map((event) => (
+        {latestEvents.map((event) => (
             <li key={event.id}>
               <strong>{event.title}</strong>
               <p>{event.description}</p>

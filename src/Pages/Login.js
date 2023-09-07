@@ -54,7 +54,7 @@ function Login() {
           </Button>
         </Paper>
       </Grid>
-      <Grid item xs={12} sm={6} className="background-image" style={{ position: 'relative', boxShadow: '0px 0px 40px rgba(0, 0, 0, 0.7)' }}>
+      <Grid item xs={12} sm={6} className="background-image" style={{ position: 'relative', boxShadow: '0px 0px 0px rgba(0, 0, 0, 0.7)' }}>
         <img
           src={backgroungIMG} // Replace with your image URL
           alt="Login Image"

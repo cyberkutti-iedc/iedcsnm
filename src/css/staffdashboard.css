@@ -1,6 +1,235 @@
 /* staffdashboard.css */
+
+/* Main container styling */
+.py-6 {
+  padding-top: 3rem;
+  padding-bottom: 2rem;
+  padding-right: 2rem;
+}
+
+.px-4 {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+/* Modify the .staff-dashboard class in your CSS file */
 .staff-dashboard {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Adjust column width as needed */
-  grid-gap: 16px; /* Adjust the gap between columns as needed */
+  background-color: #f0f0f0; /* Set your desired background color */
+
+  /* Add more styles for better appearance */
+ margin-top: 2rem;
+  padding: 10px;
+  border-radius: 12px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Style the heading */
+.staff-dashboard h4 {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* Style the tabs */
+.staff-dashboard .MuiTabs-root {
+  background-color: #fff; /* Background color for the tabs */
+  border-radius: 20px;
+  margin-top: 0.5rem;
+}
+
+/* Style the tab labels */
+.staff-dashboard .MuiTab-root {
+  
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+
+
+/* Style the buttons */
+.staff-dashboard .small-button {
+  margin-top: 1rem;
+  border-radius: 10px;
+  padding: 6px 8px;
+  font-size: 14px;
+}
+
+/* Style the table container */
+.staff-dashboard .table-container {
+  overflow-x: auto; /* Add horizontal scrolling */
+}
+
+/* Style the table */
+.staff-dashboard table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.staff-dashboard th,
+.staff-dashboard td {
+  margin-top: 2rem;
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  white-space: nowrap; /* Prevent text from wrapping */
+}
+
+
+.staff-dashboard th,
+.staff-dashboard td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+/* Style the snackbar */
+.staff-dashboard .MuiSnackbarContent-root {
+  background-color: green;
+  color: white;
+}
+
+/* Style the dialog */
+.staff-dashboard .MuiDialogTitle-root {
+  font-weight: bold;
+}
+
+.staff-dashboard .MuiDialogActions-root {
+  justify-content: flex-end;
+}
+
+
+/* Heading styling */
+.mb-6 {
+  margin-bottom: 1.5rem;
+}
+
+/* Button styling */
+.mb-4 {
+  margin-bottom: 1rem;
+}
+
+/* Event form styling */
+.event-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+/* Table styling */
+.your-table-class-name {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* Table row styling */
+.even-row {
+  background-color: #f9f9f9; /* Set your desired even row background color */
+}
+
+.odd-row {
+  background-color: #ffffff; /* Set your desired odd row background color */
+}
+
+/* Table cell styling */
+.your-table-cell-class-name {
+  padding: 0.5rem;
+  border: 1px solid #e0e0e0; /* Set your desired border color */
+  text-align: left;
+}
+
+/* Logout button styling */
+.color-warning {
+  color: #ff5722; /* Set your desired button text color */
+  background-color: transparent;
+  border: 1px solid #ff5722; /* Set your desired button border color */
+}
+
+/* Snackbar styling */
+/* You can customize the Snackbar styles to your liking */
+
+/* Confirm Delete Event Dialog styling */
+/* You can customize the dialog styles to your liking */
+
+/* Add your additional styles here as needed */
+
+
+
+
+/* Add this to your CSS file */
+.small-button {
+  padding: 6px 12px; /* Adjust the padding to control the button size */
+  font-size: 14px; /* Adjust the font size as needed */
+}
+
+
+
+/* For screens with a maximum width of 768px (typical for mobile devices) */
+@media (max-width: 580px) {
+  /* Modify the main container */
+  .py-6 {
+    padding-top: 2rem;
+    padding-bottom: 1rem;
+    padding-right: 1rem;
+  }
+  .px-4 {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
+  /* Adjust the staff dashboard container */
+  .staff-dashboard {
+    margin-top: 1rem;
+    padding: 8px;
+  }
+
+  /* Style the heading for smaller screens */
+  .staff-dashboard h4 {
+    font-size: 20px;
+    margin-bottom: 15px;
+    
+  }
+
+  /* Style the buttons for smaller screens */
+  .staff-dashboard .small-button {
+    padding: 4px 8px;
+    font-size: 16px;
+     
+  }
+
+  /* Style the table container for smaller screens */
+  .staff-dashboard .table-container {
+    overflow-x: auto;
+  }
+
+  /* Style the table for smaller screens */
+  .staff-dashboard table {
+    margin-top: 8px;
+  }
+
+  /* Style the table headers and cells for smaller screens */
+  .staff-dashboard th,
+  .staff-dashboard td {
+    padding: 8px;
+  }
+
+  /* Style the snackbar for smaller screens */
+  .staff-dashboard .MuiSnackbarContent-root {
+    font-size: 14px;
+    border-radius: 2px;
+  }
+
+  /* Style the dialog title for smaller screens */
+  .staff-dashboard .MuiDialogTitle-root {
+    font-size: 18px;
+  }
+
+  /* Style the dialog actions for smaller screens */
+  .staff-dashboard .MuiDialogActions-root {
+    justify-content: flex-end;
+  }
+
+  /* Add your additional mobile-responsive styles here */
 }

@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import '../css/staffdashboard.css';
 import {
-  Button,
   Container,
   Typography,
   Paper,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
+  Grid,
+  Button,
   Table,
   TableHead,
   TableBody,
@@ -16,13 +13,61 @@ import {
   TableRow,
   TextField,
   IconButton,
-  Grid,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  FormControlLabel,
+  Switch,
+  Snackbar,
+  SnackbarContent,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Tabs,
+  Tab,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import '../css/staffdashboard.css';
-import { firestore, auth ,storage} from '../firebaseConfig';
+import CloseIcon from '@mui/icons-material/Close';
 
+import { firestore, auth ,storage} from '../firebaseConfig';
+import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
+import '../css/staffdashboard.css';
+
+
+
+// Define tab panel component
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`tabpanel-${index}`}
+      aria-labelledby={`tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Container>
+          <div>{children}</div>
+        </Container>
+      )}
+    </div>
+  );
+}
+
+TabPanel.propTypes = {
+  children: PropTypes.node,
+  index: PropTypes.number.isRequired,
+  value: PropTypes.number.isRequired,
+};
+
+
+
+
 function StaffDashboard() {
   const navigate =useNavigate;
   const [staffData, setStaffData] = useState({});
@@ -36,6 +81,7 @@ function StaffDashboard() {
   const [eventTime, setEventTime] = useState('');
   const [eventVenue, setEventVenue] = useState('');
   const [eventDesc, setEventDesc] = useState('');
+  const [currentTab, setCurrentTab] = useState(0);
   // State to manage the editing of an event
   const [editingEvent, setEditingEvent] = useState(null);
   // State to store the edited event details
@@ -47,6 +93,12 @@ function StaffDashboard() {
     location: '',
     description: '',
   });  
+
+
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
+  const [deleteEventId, setDeleteEventId] = useState('');
 
   useEffect(() => {
 
@@ -189,79 +241,42 @@ function StaffDashboard() {
       alert('Failed to create the event. Please check the console for details.');
     }
   };
-  
-  // Function to delete an event document
-  const handleDeleteEvent = async (eventId) => {
-    try {
-      // Create a reference to the event document in Firestore
-      const eventRef = firestore.collection('events').doc(eventId);
 
-      // Delete the event document
-      await eventRef.delete();
 
-      alert('Event deleted successfully!');
-    } catch (error) {
-      console.error('Error deleting event:', error);
-      alert('Failed to delete the event. Please check the console for details.');
-    }
-  };
-  
-  
-// Function to set the event being edited
-const handleEditEvent = (eventId) => {
-  const eventToEdit = events.find((event) => event.id === eventId);
-  setEditedEvent(eventToEdit);
-  setEditingEvent(eventId);
-};
 
-// Function to update the edited event in Firestore
-const handleUpdateEvent = async () => {
+// Function to delete an event document by ID
+const deleteEventById = async (eventId) => {
   try {
-    const user = auth.currentUser;
-    if (user) {
-      // Create a reference to the event document in Firestore
-      const eventRef = firestore.collection('events').doc(editedEvent.id);
+    // Create a reference to the event document in Firestore
+    const eventRef = firestore.collection('events').doc(eventId).delete();
 
-      // Update the event document with the edited details
-      await eventRef.update({
-        title: editedEvent.title,
-        date: editedEvent.date,
-        description: editedEvent.description,
-        time: editedEvent.time,
-        location: editedEvent.location,
-      });
+    // Delete the event document
+    await eventRef.delete();
 
-      // Clear the edited event details and stop editing mode
-      setEditedEvent({
-        id: '',
-        title: '',
-        date: '',
-        time: '',
-        location: '',
-        description: '',
-      });
-      setEditingEvent(null);
-
-      alert('Event updated successfully!');
-    }
+    alert('Event deleted successfully!');
   } catch (error) {
-    console.error('Error updating event:', error);
-    alert('Failed to update the event. Please check the console for details.');
+    console.error('Error deleting event:', error);
+    alert('Failed to delete the event. Please check the console for details.');
   }
 };
 
-// Function to cancel the editing of an event
-const cancelEdit = () => {
-  setEditedEvent({
-    id: '',
-    title: '',
-    date: '',
-    time: '',
-    location: '',
-    description: '',
-  });
-  setEditingEvent(null);
+// Modify the handleConfirmDeleteEvent function to delete the event by ID
+const handleConfirmDeleteEvent = () => {
+  // Close the confirmation dialog
+  setConfirmDialogOpen(false);
+
+  // Call the function to delete the event by ID
+  deleteEventById(deleteEventId);
 };
+
+// Modify the handleDeleteEvent function to open the confirmation dialog
+const handleDeleteEvent = (eventId) => {
+  setConfirmDialogOpen(true); // Open the confirmation dialog
+  setDeleteEventId(eventId); // Set the eventId to be deleted
+};
+  
+  
+
 
 
 const handleLogout = async () => {
@@ -274,7 +289,10 @@ const handleLogout = async () => {
 };
 
 //STYLES
-
+// Function to handle tab change
+const handleTabChange = (event, newValue) => {
+  setCurrentTab(newValue);
+};
 
 
   if (loading) {
@@ -282,37 +300,60 @@ const handleLogout = async () => {
   }
 
   return (
-    <Container className="py-6 px-4">
-     <Typography variant="h4" className="mb-6">
-        Welcome, {staffData.firstName} {staffData.lastName}!
+    <Container className="py-6 px-4 staff-dashboard">
+      <Typography variant="h4" className="mb-6">
+        Welcome, {staffData.firstname} {staffData.lastname}!
       </Typography>
-      
+      <Typography>Email: {staffData.email}</Typography>
+            <Typography>Designation: {staffData.designation}</Typography>
+            <Typography>Branch: {staffData.Branch}</Typography>
+            <Typography>Phone: {staffData.phone}</Typography>
+            <Typography>KTU ID: {staffData.KTUid}</Typography>
+
+      {/* Tabs for different sections */}
+      <Tabs value={currentTab} onChange={handleTabChange} centered>
+        <Tab label="User Info" />
+        <Tab label="Student List" />
+        <Tab label="Create Event" />
+        <Tab label="Event Cards" />
+      </Tabs>
+      <Button
+            variant="contained"
+            color="primary"
+            className="small-button"
+            onClick={handleShowStudentList}
+          >
+        {showStudentList ? 'Hide Student List' : 'Show Student List'}
+      </Button>
+      {/* Tab Panels */}
+      <TabPanel  index={0} value={currentTab}
+        onChange={handleTabChange}
+        centered
+        variant="fullWidth" // Add this variant to create a gap between tabs
+        sx={{ marginBottom: 10 }}>
+      {/* User Info */}
       <Grid container spacing={3}>
         <Grid item xs={12} md={6} lg={4}>
           <Paper className="p-4 mb-4">
             <Typography>Email: {staffData.email}</Typography>
             <Typography>Designation: {staffData.designation}</Typography>
-            <Typography>Branch: {staffData.branch}</Typography>
+            <Typography>Branch: {staffData.Branch}</Typography>
             <Typography>Phone: {staffData.phone}</Typography>
             <Typography>KTU ID: {staffData.KTUid}</Typography>
           </Paper>
         </Grid>
         </Grid>
-
+        </TabPanel>
+        <TabPanel value={currentTab} index={2}>
         <Grid item xs={12} md={6} lg={8}>
-          <Button
-            variant="contained"
-            color="primary"
-            className="mb-4"
-            onClick={handleShowStudentList}
-          >
-        {showStudentList ? 'Hide Student List' : 'Show Student List'}
-      </Button>
+          
 </Grid>
 
-      <div className="mb-4">
-        <Typography variant="h5" className="mb-2">Create Event</Typography>
-        <form className="flex flex-col space-y-4">
+<div className="mb-4">
+        <Typography variant="h5" className="mb-2">
+          Create Event
+        </Typography>
+        <form className="event-form">
           <TextField
             label="Event Name"
             value={eventName}
@@ -346,125 +387,45 @@ const handleLogout = async () => {
           </Button>
         </form>
       </div>
- 
-
+</TabPanel> 
+<TabPanel  index={3} value={currentTab}
+        onChange={handleTabChange}
+        centered
+        variant="fullWidth" // Add this variant to create a gap between tabs
+        sx={{ marginBottom: 4 }}>
       <Grid container spacing={3}>
-        {events.map((event) => (
-          <Grid item xs={12} sm={6} lg={4} key={event.id}>
-            <Paper className="p-4">
-              <Typography variant="h6">{event.title}</Typography>
-              <Typography>Date: {event.date}</Typography>
-              <Typography>Time: {event.time}</Typography>
-              <Typography>Venue: {event.location}</Typography>
-              <Typography>Description: {event.description}</Typography>
-              <IconButton
-                color="secondary"
-                onClick={() => handleDeleteEvent(event.id)}
-              >
-                <DeleteIcon />
-              </IconButton>
-            </Paper>
-          </Grid>
-        ))}
+      {events.map((event) => (
+  <Grid item xs={12} sm={6} lg={4} key={event.id}>
+    <Paper className="p-4">
+      <Typography variant="h6">{event.title}</Typography>
+      <Typography>Date: {event.date}</Typography>
+      <Typography>Time: {event.time}</Typography>
+      <Typography>Venue: {event.location}</Typography>
+      <Typography>Description: {event.description}</Typography>
+      <IconButton
+        color="secondary"
+        onClick={() => handleDeleteEvent(event.id)}
+      >
+        <DeleteIcon />
+      </IconButton>
+    </Paper>
+  </Grid>
+))}
+
       </Grid>
 
       
+</TabPanel>
 
-
-      {/* Event list */}
-      <div className="space-y-4">
-      {events.map((event) => (
-        <div key={event.id} className="border p-4 rounded-md">
-          {/* Display event details */}
-          {editingEvent === event.id ? (
-            // Edit mode: Show input fields for editing
-            <div>
-              <TextField
-                label="Event Name"
-                value={editedEvent.title}
-                onChange={(e) =>
-                  setEditedEvent({ ...editedEvent, title: e.target.value })
-                }
-              />
-              <TextField
-                label="Event Date"
-                type="date"
-                value={editedEvent.date}
-                onChange={(e) =>
-                  setEditedEvent({ ...editedEvent, date: e.target.value })
-                }
-              />
-              <TextField
-                label="Event Time"
-                type="time"
-                value={editedEvent.time}
-                onChange={(e) =>
-                  setEditedEvent({ ...editedEvent, time: e.target.value })
-                }
-              />
-              <TextField
-                label="Event Description"
-                value={editedEvent.description}
-                onChange={(e) =>
-                  setEditedEvent({
-                    ...editedEvent,
-                    description: e.target.value,
-                  })
-                }
-              />
-              <TextField
-                label="Event Venue"
-                value={editedEvent.location}
-                onChange={(e) =>
-                  setEditedEvent({ ...editedEvent, location: e.target.value })
-                }
-              />
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleUpdateEvent}
-              >
-                Update
-              </Button>
-              <Button variant="contained" color="secondary" onClick={cancelEdit}>
-                Cancel
-              </Button>
-            </div>
-          ) : (
-            // View mode: Show event details and edit button
-            <div>
-              <Typography variant="h6">{event.title}</Typography>
-              <Typography>Date: {event.date}</Typography>
-              <Typography>Time: {event.time}</Typography>
-              <Typography>Venue: {event.location}</Typography>
-              <Typography>Description: {event.description}</Typography>
-              <IconButton
-                color="secondary"
-                onClick={() => handleDeleteEvent(event.id)} // Pass the event ID to the delete function
-              >
-                <DeleteIcon />
-              </IconButton>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => handleEditEvent(event.id)} // Pass the event ID to the edit function
-              >
-                Edit
-              </Button>
-            </div>
-          )}
-          
-        </div>
-      ))}
-</div>
-
-
-{showStudentList && (
-        <Grid container spacing={3}>
-          <Grid item xs={12}>
-            <Typography variant="h5" className="mb-2">
-              List of Students:
-            </Typography>
+<TabPanel label="Student List" value={currentTab} index={1} sx={{ marginBottom: 4 }}>
+  {showStudentList && (
+    <div>
+    
+   
+      <Typography variant="h5" className="mb-2">
+        List of Students:
+      </Typography>
+      <div className="table-container">
             <Table>
             <TableHead>
               <TableRow>
@@ -535,6 +496,10 @@ const handleLogout = async () => {
                     <MenuItem value="CPO">CPO</MenuItem>
                     <MenuItem value="CCO">CCO</MenuItem>
                     <MenuItem value="COO">COO</MenuItem>
+                    <MenuItem value="CIO">CIO</MenuItem>
+                    <MenuItem value="WOW">WOW</MenuItem>
+                    <MenuItem value="WTM">WTM</MenuItem>
+                    <MenuItem value="DEPT CO-ODRTINATOR">DEPT-COODRINATOR</MenuItem>
                     <MenuItem value="IPR AND RESEARCH OFFICER">IPR AND RESEARCH OFFICER</MenuItem>
                   </Select>
                 </FormControl>
@@ -544,25 +509,77 @@ const handleLogout = async () => {
         </TableBody>
         
       </Table>
-      </Grid>
-      </Grid>
+     
+    
 
       
-      )}
+    
       <Button
         variant="contained"
         color="primary"
+        className="small-button"
         onClick={handleSavePosts}
       >
         Save Assigned Posts
       </Button>
-
-     
+      </div>
+</div>
+  )}
+     </TabPanel>
 {/* Logout button */}
-<Button variant="contained" color="primary" onClick={handleLogout}>
+<Button variant="contained" size="small" color="warning" onClick={handleLogout}>
         Logout
       </Button>
 
+
+ {/* Snackbar for Notifications */}
+ <Snackbar
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+        open={snackbarOpen}
+        autoHideDuration={5000}
+        onClose={() => setSnackbarOpen(false)}
+      >
+        <SnackbarContent
+          sx={{
+            backgroundColor: 'green',
+            color: 'white',
+          }}
+          message={snackbarMessage}
+          action={
+            <IconButton
+              size="small"
+              color="inherit"
+              onClick={() => setSnackbarOpen(false)}
+            >
+              <CloseIcon fontSize="small" />
+            </IconButton>
+          }
+        />
+      </Snackbar>
+
+      {/* Confirm Delete Event Dialog */}
+      <Dialog open={confirmDialogOpen} onClose={() => setConfirmDialogOpen(false)}>
+        <DialogTitle>Confirm Delete</DialogTitle>
+        <DialogContent>
+          <Typography>Are you sure you want to delete this event?</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => handleDeleteEvent(deleteEventId)}
+          >
+            Yes, Delete
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => setConfirmDialogOpen(false)}
+          >
+            Cancel
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Container>
   );
 }

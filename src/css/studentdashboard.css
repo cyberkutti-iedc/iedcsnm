@@ -1,0 +1,148 @@
+/* studentdashboard.css */
+
+/* Style the dashboard container */
+.dashboard-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f0f0f0;
+}
+
+/* Style the headings */
+.dashboard-container h1 {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.dashboard-container h2 {
+  font-size: 18px;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+/* Style the button container */
+.button-container {
+  margin-top: 20px;
+}
+
+/* Style the tabs container */
+.tabs-container {
+  margin-top: 20px;
+}
+
+/* Style the tabs */
+.tabs {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.tab {
+  flex: 1;
+  text-align: center;
+  padding: 10px;
+  cursor: pointer;
+  background-color: #ddd;
+  border: 1px solid #ccc;
+  border-radius: 5px 5px 0 0;
+  transition: background-color 0.2s;
+}
+
+.tab.active {
+  background-color: #007bff;
+  color: #fff;
+}
+
+/* Style the tab content */
+.tab-content {
+  border: 1px solid #ccc;
+  border-radius: 0 0 5px 5px;
+  padding: 20px;
+  background-color: #fff;
+}
+
+/* Add this CSS to your studentdashboard.css file */
+
+/* Style the table-container */
+.table-container {
+    margin-top: 20px;
+    overflow-x: auto;
+    max-width: 100%;
+  }
+  
+  /* Style the table */
+  .student-table {
+    width: max-content;
+    border-collapse: collapse;
+    margin-top: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  
+  .student-table th,
+  .student-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .student-table th {
+    background-color: #f5f5f5;
+  }
+  
+  .student-table tbody tr:hover {
+    background-color: #f0f0f0;
+  }
+  
+  /* Style the user-info-container */
+  .user-info-container {
+    overflow-x: auto;
+    max-width: 100%;
+    margin-top: 20px;
+  }
+  
+  /* Style the user-info */
+  .user-info {
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    max-width: max-content; /* Adjust as needed */
+  }
+  
+
+  /* studentdashboard.css */
+
+/* studentdashboard.css */
+
+/* Style for the table container */
+.table-container {
+    max-width: 100%;
+    overflow-x: auto; /* Enable horizontal scrolling */
+  }
+  
+  /* Style for the custom table */
+  .custom-table {
+    width: max-content;
+    border-collapse: collapse;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  
+  .custom-table th,
+  .custom-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .custom-table th {
+    background-color: #f5f5f5;
+  }
+  
+  .custom-table tbody tr:hover {
+    background-color: #f0f0f0;
+  }
+  
