@@ -8,7 +8,7 @@ import StudentLogin from './Pages/StudentSignIn';
 import StudentDashboard from './Pages/StudentDashboard';
 import StaffDashboard from './Pages/StaffDashboard';
 import Login from './Pages/Login';
-
+import Home from './Pages/home';
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userRole, setUserRole] = useState('');
@@ -55,7 +55,7 @@ useEffect(() => {
       <div>
     
         <Routes>
-          
+          <Route path='/' element={<Home/>} />
           <Route path="/login" element={<Login/>}/>
           <Route path="/login/staffSignUp/0/" element={<Staffsignuppage />} />
           <Route path='/login/studentSignUp/0/' element={<StudentSignupPage/>} />

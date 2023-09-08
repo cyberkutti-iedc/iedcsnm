@@ -30,6 +30,9 @@ import {
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CloseIcon from '@mui/icons-material/Close';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
+import * as XLSX from 'xlsx';
 
 import { firestore, auth ,storage} from '../firebaseConfig';
 import PropTypes from 'prop-types';
@@ -81,6 +84,7 @@ function StaffDashboard() {
   const [eventTime, setEventTime] = useState('');
   const [eventVenue, setEventVenue] = useState('');
   const [eventDesc, setEventDesc] = useState('');
+  const [registrationLink, setRegistrationLink] = useState('');
   const [currentTab, setCurrentTab] = useState(0);
   // State to manage the editing of an event
   const [editingEvent, setEditingEvent] = useState(null);
@@ -210,6 +214,9 @@ function StaffDashboard() {
     setEventVenue(e.target.value);
   };
 
+  const handleRegistrationLinkChange = (e) => {
+    setRegistrationLink(e.target.value);
+  };
 
   const handleSubmitEvent = async () => {
     try {
@@ -223,6 +230,7 @@ function StaffDashboard() {
            description: eventDesc, // Store the event description
            time: eventTime,
            location: eventVenue,
+           registrationLink: registrationLink,
            timestamp: new Date(),
            createdBy: user.uid, // You can store the NODAL OFFICER's UID
          });
@@ -233,6 +241,7 @@ function StaffDashboard() {
         setEventTime('');
         setEventVenue('');
         setEventDesc('');
+        setRegistrationLink(''); // Clear the registration link field
 
         alert('Event created successfully!');
       }
@@ -275,8 +284,6 @@ const handleDeleteEvent = (eventId) => {
   setDeleteEventId(eventId); // Set the eventId to be deleted
 };
   
-  
-
 
 
 const handleLogout = async () => {
@@ -348,45 +355,48 @@ const handleTabChange = (event, newValue) => {
         <Grid item xs={12} md={6} lg={8}>
           
 </Grid>
-
 <div className="mb-4">
-        <Typography variant="h5" className="mb-2">
-          Create Event
-        </Typography>
-        <form className="event-form">
-          <TextField
-            label="Event Name"
-            value={eventName}
-            onChange={handleEventNameChange}
-          />
-          <TextField
-            label="Event Date"
-            type="date"
-            value={eventDate}
-            onChange={handleEventDateChange}
-          />
-         
-          <TextField
-            label="Event Time"
-            type="time"
-            value={eventTime}
-            onChange={handleEventTimeChange}
-          />
-          <TextField
-            label="Event Description"
-            value={eventVenue}
-            onChange={handleEventVenueChange}
-          />
-         
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleSubmitEvent}
-          >
-            Create Event
-          </Button>
-        </form>
-      </div>
+  <Typography variant="h5" className="mb-2">
+    Create Event
+  </Typography>
+  <form className="event-form">
+    <TextField
+      label="Event Name"
+      value={eventName}
+      onChange={handleEventNameChange}
+    />
+    <TextField
+      label="Event Date"
+      type="date"
+      value={eventDate}
+      onChange={handleEventDateChange}
+    />
+    <TextField
+      label="Event Time"
+      type="time"
+      value={eventTime}
+      onChange={handleEventTimeChange}
+    />
+    <TextField
+      label="Event Description"
+      value={eventVenue}
+      onChange={handleEventVenueChange}
+    />
+    <TextField
+      label="Registration Link"
+      value={registrationLink}
+      onChange={handleRegistrationLinkChange}
+    />
+    <Button
+      variant="contained"
+      color="primary"
+      onClick={handleSubmitEvent}
+    >
+      Create Event
+    </Button>
+  </form>
+</div>
+
 </TabPanel> 
 <TabPanel  index={3} value={currentTab}
         onChange={handleTabChange}
@@ -402,6 +412,7 @@ const handleTabChange = (event, newValue) => {
       <Typography>Time: {event.time}</Typography>
       <Typography>Venue: {event.location}</Typography>
       <Typography>Description: {event.description}</Typography>
+      <Typography>Registration Link: {event.registrationLink}</Typography>
       <IconButton
         color="secondary"
         onClick={() => handleDeleteEvent(event.id)}
@@ -510,9 +521,7 @@ const handleTabChange = (event, newValue) => {
         
       </Table>
      
-    
-
-      
+  
     
       <Button
         variant="contained"
@@ -526,6 +535,8 @@ const handleTabChange = (event, newValue) => {
 </div>
   )}
      </TabPanel>
+    
+
 {/* Logout button */}
 <Button variant="contained" size="small" color="warning" onClick={handleLogout}>
         Logout

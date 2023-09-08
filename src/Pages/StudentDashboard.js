@@ -4,7 +4,8 @@ import { auth, firestore ,storage} from '../firebaseConfig';
 // MATERIAL UI
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import { TableCell,Table,TableBody,TableRow,TableHead } from '@mui/material';
+import { TableCell,Table,TableBody,TableRow,TableHead ,Typography} from '@mui/material';
+import LocalActivityIcon from '@mui/icons-material/LocalActivity';
 import '../css/studentdashboard.css';
 function StudentDashboard() {
   const navigate = useNavigate();
@@ -44,7 +45,7 @@ const [activeTab, setActiveTab] = useState('personalInfo');
   const handleLogout = async () => {
     try {
       await auth.signOut();
-      navigate('/login/student/1');
+      navigate('/login');
     } catch (error) {
       console.error(error);
     }
@@ -285,6 +286,16 @@ const [activeTab, setActiveTab] = useState('personalInfo');
       <h1>Welcome Back, {`${userData?.firstname || 'Student'} ${userData?.lastname || ''}`}
 </h1>
       <h2>Helloo..., {userData?.posts || 'students'}</h2>
+      
+      <div className="activity-point">
+    
+        <Typography variant="h2">
+          My IEDC Activity Points ⚡: {userData?.activityPoints}
+        </Typography>
+       
+      
+    </div>
+     
       <div className="button-container">
         <Button
           variant="contained"
@@ -305,11 +316,13 @@ const [activeTab, setActiveTab] = useState('personalInfo');
             Personal Information
           </div>
           <div
-            className={`tab ${activeTab === 'uploadPoster' ? 'active' : ''}`}
-            onClick={() => handleTabClick('uploadPoster')}
-          >
-            Upload Poster
-          </div>
+  className={`tab ${activeTab === 'uploadPoster' ? 'active' : ''}`}
+  onClick={() => handleTabClick('uploadPoster')}
+>
+  Upload Poster
+  <span className="beta-label">Beta</span>
+</div>
+
          
         </div>
         <div className="tab-content">
@@ -521,15 +534,26 @@ const [activeTab, setActiveTab] = useState('personalInfo');
         <h2>Latest Events</h2>
         <ul>
         {latestEvents.map((event) => (
-            <li key={event.id}>
-              <strong>{event.title}</strong>
-              <p>{event.description}</p>
-              <p>Date: {event.date}</p>
-              <p>Location: {event.location}</p>
-              <p>Time: {event.time}</p>
-              <p>Description:{event.location}</p>
-            </li>
-          ))}
+  <div key={event.id} className="event-item">
+    <Typography variant="h6">Event Name:{event.title}</Typography>
+    <Typography>{event.description}</Typography>
+    <Typography>Date: {event.date}</Typography>
+    <Typography>Description: {event.location}</Typography>
+    <Typography>Time: {event.time}</Typography>
+    
+    {event.registrationLink && (
+      <div className="registration-link">
+        <Typography variant="subtitle1">Registration Link:</Typography>
+        <a href={event.registrationLink} target="_blank" rel="noopener noreferrer">
+          {event.registrationLink}
+        </a>
+      </div>
+    )}
+  </div>
+))}
+
+
+         
         </ul>
       </div>
     </div>

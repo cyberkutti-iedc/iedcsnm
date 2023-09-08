@@ -1,12 +1,33 @@
+
+
 /* Add this CSS to your stylesheet or a separate CSS file */
 @media (max-width: 480px) {
-    .background-image {
-      position: relative;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1; /* Ensures the background image is behind other content */
+  .background-image {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* Ensures the background image is behind other content */
+    filter: blur(.1px); /* Add a blur effect to the background image */
+    animation: colorfulShadow 5s linear infinite; /* Add an animation to the shadow */
+  }
+
+  @keyframes colorfulShadow {
+    0% {
+      box-shadow: 20px 0px 20px rgba(255, 0, 0, 0.7); /* Red shadow */
+    }
+    25% {
+      box-shadow: 20px 0px 20px rgba(0, 255, 0, 0.7); /* Green shadow */
+    }
+    50% {
+      box-shadow: 20px 0px 20px rgba(0, 0, 255, 0.7); /* Blue shadow */
+    }
+    75% {
+      box-shadow: 20px 0px 20px rgba(255, 255, 0, 0.7); /* Yellow shadow */
+    }
+    100% {
+      box-shadow: 20px 0px 20px rgba(255, 0, 255, 0.7); /* Purple shadow */
     }
   }
-  
+}

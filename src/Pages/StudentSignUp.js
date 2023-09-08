@@ -53,6 +53,7 @@ function StudentSignupPage() {
       yearofjoining:event.target.yearofjoining.value,
       skills:event.target.skills.value,
       iedcjoiningdate:event.target.iedcjoiningdate.value,
+      posts:event.target.posts.value,
       password: event.target["userpassword"].value,
       passwordconfirm: event.target["userpasswordconfirm"].value
     };
@@ -317,6 +318,14 @@ function StudentSignupPage() {
                     </label>
                     <input type="text" name="skills" id="skills" required/>
                     <span>skills</span>
+                    <div class="error"></div>
+                </div>
+
+                <div class={staffcss["input-container"]}>
+                    <label for="posts">
+                    </label>
+                    <input type="text" name="posts" id="posts" required/>
+                    <span>Your Post</span>
                     <div class="error"></div>
                 </div>
 

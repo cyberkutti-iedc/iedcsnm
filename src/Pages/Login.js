@@ -55,14 +55,24 @@ function Login() {
         </Paper>
       </Grid>
       <Grid item xs={12} sm={6} className="background-image" style={{ position: 'relative', boxShadow: '0px 0px 0px rgba(0, 0, 0, 0.7)' }}>
-        <img
-          src={backgroungIMG} // Replace with your image URL
-          alt="Login Image"
-          style={{ width: '100%', height: '100%', objectFit: 'cover', zIndex: -1 }}
-        />
+      <img
+  src={backgroungIMG} 
+  alt="Login Image"
+  style={{
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',
+    zIndex: -1,
+    filter: 'blur(.01px)', /* Add a blur effect to the background image */
+    animation: 'colorfulShadow 5s linear infinite', /* Add an animation to the shadow */
+    boxShadow: '20px 0px 20px rgba(255, 0, 0, 0.7)' /* Initial shadow color (Red) */
+  }}
+/>
+
       </Grid>
     </Grid>
   );
 }
 
 export default Login;
+ 
